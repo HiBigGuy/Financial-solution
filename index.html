@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="robots" content="index, follow" />
+    <title>FinanceX — Gestão financeira pessoal</title>
+    <meta
+      name="description"
+      content="FinanceX é o seu centro de controle financeiro pessoal: salário, cartões, investimentos, metas e relatórios em um só lugar, com tema escuro e visual limpo."
+    />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="FinanceX" />
+    <meta property="og:title" content="FinanceX — Gestão financeira pessoal" />
+    <meta
+      property="og:description"
+      content="Controle salário, cartões, investimentos e metas com foco e simplicidade. Single-user, seus dados ficam com você."
+    />
+    <meta property="og:url" content="https://higbiguy.github.io/Financial-solution/" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="FinanceX — Gestão financeira pessoal" />
+    <meta
+      name="twitter:description"
+      content="Controle salário, cartões, investimentos e metas com foco e simplicidade."
+    />
+    <script>
+      // Aplica o tema antes do CSS carregar para evitar flash (FOUC)
+      (function () {
+        try {
+          var stored = localStorage.getItem("financex-theme");
+          var dark = stored ? stored === "dark" : true;
+          if (dark) document.documentElement.classList.add("dark");
+        } catch (e) {
+          document.documentElement.classList.add("dark");
+        }
+      })();
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>

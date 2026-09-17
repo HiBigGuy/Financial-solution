@@ -1,0 +1,14 @@
+User-agent: *
+Allow: /
+Disallow: /login
+
+# Rotas internas do app (autenticadas) — não indexar
+Disallow: /dashboard
+Disallow: /salario
+Disallow: /cartoes
+Disallow: /investimentos
+Disallow: /metas
+Disallow: /relatorios
+Disallow: /transacoes
+
+Sitemap: https://higbiguy.github.io/Financial-solution/sitemap.xml
