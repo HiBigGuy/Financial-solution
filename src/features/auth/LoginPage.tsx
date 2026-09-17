@@ -71,7 +71,7 @@ VITE_SUPABASE_ANON_KEY=sua-chave-anonima`}
           <div className="mb-3 flex h-11 w-11 items-center justify-center rounded-xl bg-brand/15">
             <KeyRound className="h-5 w-5 text-brand" />
           </div>
-          <h1 className="text-[17px] font-semibold text-foreground">FinanceX</h1>
+          <h1 className="text-[17px] font-semibold text-foreground">Vault</h1>
           <p className="mt-1 text-[12px] text-muted">Acesse sua conta</p>
         </div>
 

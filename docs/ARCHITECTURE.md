@@ -1,4 +1,4 @@
-# FinanceX — Arquitetura
+# Vault — Arquitetura
 
 > Documento com as decisões técnicas e a justificativa de cada escolha.
 
@@ -68,6 +68,43 @@ front que o schema e a estrutura se mantêm.
 Datas são armazenadas como `date` (ISO `YYYY-MM-DD`) e valores como `numeric(14,2)`.
 Agregações (mês a mês, variação %, fatura do cartão) ficam em `src/lib/calculations.ts`.
 
+## Camada bancária (Open Finance) e IA
+
+Implementada em fases. **Fase 1 (schema)** já está na migration
+[`supabase/migrations/0002_banking.sql`](../supabase/migrations/0002_banking.sql),
+executada no Supabase — inclusive as extensões `pg_cron` e `pg_net`.
+
+- `bank_connections` — conexões Open Finance do provedor (Pluggy). Guarda apenas
+  `item_id`, instituição, status e datas de sincronização. **Nunca** armazena
+  senha/credencial bancária.
+- `bank_accounts` — contas e cartões retornados pelo provedor (`external_id`,
+  saldo, limite, moeda), com vínculo opcional a um `cards` do app.
+- `categorization_corrections` — histórico de correções de categoria usadas como
+  *few-shot* para a IA melhorar as sugestões.
+- `insights` — resumos textuais gerados pela IA (semanal/mensal) exibidos no
+  Dashboard.
+- `transactions` ganhou `source` (`manual`/`open_finance`), `external_id`
+  (com índice único `(user_id, external_id)` para **sincronização idempotente**),
+  `account_id`, `category_source` (`manual`/`ai`), `ai_suggested_category_id` e
+  `ai_confidence`.
+
+RLS segue o mesmo padrão (`auth.uid() = user_id`) nas novas tabelas.
+
+### Fase 2 (Edge Functions, a implementar)
+
+Funções em Deno publicadas no Supabase, sem servidor próprio:
+`pluggy-connect` (geração do connect token do widget), `pluggy-item` (persiste o
+consentimento), `sync-accounts`, `sync-transactions` (upsert com dedup + chamada
+de IA), `categorize` (Anthropic) e `insights`.
+
+Secrets (configurar em **Supabase → Project Settings → Edge Functions → Secrets**;
+**nunca** no frontend): `PLUGGY_CLIENT_ID`, `PLUGGY_CLIENT_SECRET`,
+`ANTHROPIC_API_KEY`.
+
+O agendamento da sincronização (a cada 6h) usa `pg_cron` + `pg_net` — há um
+template comentado no fim da migration `0002`; basta preencher o `PROJECT_REF` e
+o segredo após publicar as funções.
+
 ## Tema
 
 O tema escuro é o padrão (fundo `#0B0F14`). Tudo é controlado por CSS variables
@@ -78,8 +115,9 @@ antes do CSS carregar (sem FOUC). Os gráficos Recharts consomem as mesmas vars.
 ## Segurança
 
 - Variáveis sensíveis em `.env` (nunca commitar — `.gitignore` protege).
-- Somente a **anon key** do Supabase fica no cliente (pública por natureza); o
-  verdadeiro controle é via **RLS** no banco.
+- Só a chave **publishable** (antiga *anon key*) fica no cliente — ela é pública
+  por natureza e respeita o RLS. A **secret/service key** e os secrets de
+  integração (Pluggy/Anthropic) ficam **exclusivamente** nas Edge Functions.
 - Sanitização básica de inputs; validação de valores > 0 nos formulários.
 - HTTPS garantido pelo GitHub Pages + Supabase.
 

@@ -1,9 +1,9 @@
 {
-  "name": "financex",
+  "name": "vault",
   "private": true,
   "version": "0.1.0",
   "type": "module",
-  "description": "FinanceX — Sistema de gestão financeira pessoal (single-user)",
+  "description": "Vault — Sistema de gestão financeira pessoal",
   "scripts": {
     "dev": "vite",
     "build": "tsc --noEmit && vite build",

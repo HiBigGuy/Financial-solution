@@ -41,7 +41,7 @@ function exportAllData() {
       const url = URL.createObjectURL(blob);
       const a = document.createElement("a");
       a.href = url;
-      a.download = `financex-backup-${new Date().toISOString().slice(0, 10)}.json`;
+      a.download = `vault-backup-${new Date().toISOString().slice(0, 10)}.json`;
       a.click();
       URL.revokeObjectURL(url);
       toast.success("Backup exportado");
@@ -57,7 +57,7 @@ export function Topbar({ onMenu }: { onMenu?: () => void }) {
   const [profileOpen, setProfileOpen] = useState(false);
 
   const current = NAV_ITEMS.find((n) => pathname.startsWith(n.to));
-  const title = current?.title ?? "FinanceX";
+  const title = current?.title ?? "Vault";
   const name = profile?.name || user?.email?.split("@")[0] || "Usuário";
   const initial = (name.trim()[0] ?? "U").toUpperCase();
 

@@ -1,4 +1,4 @@
--- FinanceX — Schema Supabase
+-- Vault — Schema Supabase
 -- Execute este SQL no Supabase SQL Editor (Dashboard > SQL Editor)
 
 -- ============================================================

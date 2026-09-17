@@ -23,7 +23,7 @@ export function Logo({ onNavigate }: { onNavigate?: () => void }) {
     <div className="flex items-center gap-2.5" onClick={onNavigate}>
       <LogoMark />
       <span className="text-[16px] font-semibold tracking-tight text-foreground">
-        Finance<span className="text-brand">X</span>
+        Vault
       </span>
     </div>
   );

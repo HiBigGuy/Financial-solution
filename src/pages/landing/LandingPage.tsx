@@ -40,7 +40,7 @@ const FEATURES = [
   {
     icon: Lock,
     title: "Seus dados com você",
-    desc: "Single-user autenticado, com políticas RLS garantindo que só você acessa.",
+    desc: "Conta autenticada, com políticas RLS garantindo que só você acessa.",
   },
 ];
 
@@ -72,7 +72,7 @@ export function LandingPage() {
             </span>
           </h1>
           <p className="mt-4 max-w-md text-[15px] leading-relaxed text-muted">
-            FinanceX reúne salário, cartões, investimentos, metas e relatórios em
+            Vault reúne salário, cartões, investimentos, metas e relatórios em
             uma interface escura e limpa — feita para uso pessoal, sem ruído.
           </p>
           <div className="mt-7 flex flex-wrap items-center gap-3">
@@ -164,7 +164,7 @@ export function LandingPage() {
 
       <footer className="border-t border-border">
         <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-3 px-5 py-6 text-[12px] text-faint sm:flex-row sm:px-8">
-          <span>FinanceX © 2026 — projeto pessoal open source (MIT).</span>
+          <span>Vault © 2026 — projeto pessoal open source (MIT).</span>
           <span>Feito com React, Recharts e Supabase.</span>
         </div>
       </footer>

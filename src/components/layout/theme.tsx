@@ -1,7 +1,7 @@
 import { createContext, useCallback, useContext, useEffect, useState, type ReactNode } from "react";
 
 type Theme = "dark" | "light";
-const STORAGE_KEY = "financex-theme";
+const STORAGE_KEY = "vault-theme";
 
 const ThemeCtx = createContext<{ theme: Theme; toggle: () => void }>({
   theme: "dark",

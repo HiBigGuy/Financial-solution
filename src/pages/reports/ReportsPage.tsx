@@ -144,7 +144,7 @@ export function ReportsPage() {
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
     a.href = url;
-    a.download = `financex-relatorio-${from}-a-${to}.csv`;
+    a.download = `vault-relatorio-${from}-a-${to}.csv`;
     a.click();
     URL.revokeObjectURL(url);
     toast.success("CSV exportado");
@@ -231,7 +231,7 @@ export function ReportsPage() {
       {/* Area de impressão (PDF) */}
       <div className="report-print-area">
         <div className="mb-4 hidden print:block">
-          <h2 className="text-xl font-semibold">Relatório FinanceX</h2>
+          <h2 className="text-xl font-semibold">Relatório Vault</h2>
           <p className="text-sm text-muted">de {fmtMonthKey(from)} até {fmtMonthKey(to)}</p>
         </div>
 

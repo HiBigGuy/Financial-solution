@@ -1,4 +1,4 @@
-# FinanceX — Gestão Financeira Pessoal
+# Vault — Gestão Financeira Pessoal
 
 Sistema **web** de gestão financeira pessoal com tema escuro, painel visual e
 módulos de salário, cartões, investimentos, metas, transações e relatórios.
@@ -7,7 +7,7 @@ módulos de salário, cartões, investimentos, metas, transações e relatórios
 
 ## Como funciona
 
-FinanceX é um **sistema único e centralizado hospedado na web** — não é um app
+Vault é um **sistema único e centralizado hospedado na web** — não é um app
 que roda "na sua máquina". Você só precisa de um navegador:
 
 1. Acesse o site e **crie sua conta** (e-mail e senha, ou login por *magic link*
