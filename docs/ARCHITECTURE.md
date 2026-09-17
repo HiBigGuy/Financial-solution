@@ -90,16 +90,33 @@ executada no Supabase — inclusive as extensões `pg_cron` e `pg_net`.
 
 RLS segue o mesmo padrão (`auth.uid() = user_id`) nas novas tabelas.
 
-### Fase 2 (Edge Functions, a implementar)
+### Fase 2 (Edge Functions)
 
-Funções em Deno publicadas no Supabase, sem servidor próprio:
+As funções Deno estão implementadas em `supabase/functions/` e devem ser
+publicadas no Supabase, sem servidor próprio:
 `pluggy-connect` (geração do connect token do widget), `pluggy-item` (persiste o
 consentimento), `sync-accounts`, `sync-transactions` (upsert com dedup + chamada
-de IA), `categorize` (Anthropic) e `insights`.
+de IA Gemini), `categorize` (Gemini) e `insights`.
 
 Secrets (configurar em **Supabase → Project Settings → Edge Functions → Secrets**;
 **nunca** no frontend): `PLUGGY_CLIENT_ID`, `PLUGGY_CLIENT_SECRET`,
-`ANTHROPIC_API_KEY`.
+`GEMINI_API_KEY`, `GEMINI_MODEL` (opcional), `SUPABASE_URL`, `SUPABASE_ANON_KEY`,
+`SUPABASE_SERVICE_ROLE_KEY` e `CRON_SECRET`.
+
+O deploy pode ser feito com a CLI do Supabase, uma função por vez:
+
+```bash
+supabase functions deploy pluggy-connect
+supabase functions deploy pluggy-item
+supabase functions deploy sync-accounts
+supabase functions deploy sync-transactions
+supabase functions deploy categorize
+supabase functions deploy insights
+```
+
+Depois do deploy, o frontend deve chamar as funções usando o cliente Supabase
+autenticado. A chave `SUPABASE_SERVICE_ROLE_KEY` nunca deve ser exposta ao
+navegador.
 
 O agendamento da sincronização (a cada 6h) usa `pg_cron` + `pg_net` — há um
 template comentado no fim da migration `0002`; basta preencher o `PROJECT_REF` e

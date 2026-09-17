@@ -1,5 +1,5 @@
 import { useMemo, useState } from "react";
-import { ArrowDownLeft, ArrowUpRight, Filter, Pencil, Plus, Search, Trash2 } from "lucide-react";
+import { ArrowDownLeft, ArrowUpRight, Filter, Pencil, Plus, Search, Sparkles, Trash2 } from "lucide-react";
 import { supabase } from "@/lib/supabase";
 import { useRows } from "@/hooks/use-rows";
 import type { Transaction, Category, Card } from "@/lib/types";
@@ -29,6 +29,7 @@ export function TransactionsPage() {
   const [editing, setEditing] = useState<Transaction | null>(null);
   const [deleting, setDeleting] = useState<Transaction | null>(null);
   const [deletingLoading, setDeletingLoading] = useState(false);
+  const [categorizingId, setCategorizingId] = useState<string | null>(null);
 
   // Filtros
   const [search, setSearch] = useState("");
@@ -82,6 +83,21 @@ export function TransactionsPage() {
     }
     toast.success("Transação excluída");
     setDeleting(null);
+    tx.refetch();
+  };
+
+  const categorizeWithAi = async (transactionId: string) => {
+    if (!supabase) return;
+    setCategorizingId(transactionId);
+    const { error } = await supabase.functions.invoke("categorize", {
+      body: { transactionId },
+    });
+    setCategorizingId(null);
+    if (error) {
+      toast.error("Não foi possível categorizar com IA");
+      return;
+    }
+    toast.success("Transação categorizada com IA");
     tx.refetch();
   };
 
@@ -262,6 +278,15 @@ export function TransactionsPage() {
                       <td className="px-4 py-3">
                         <div className="flex justify-end gap-1">
                           <button
+                            onClick={() => categorizeWithAi(t.id)}
+                            disabled={categorizingId === t.id}
+                            className="rounded-lg p-1.5 text-faint transition hover:bg-brand/10 hover:text-brand disabled:opacity-50"
+                            aria-label={`Categorizar ${t.description} com IA`}
+                            title="Categorizar com IA"
+                          >
+                            <Sparkles className={cn("h-4 w-4", categorizingId === t.id && "animate-pulse")} />
+                          </button>
+                          <button
                             onClick={() => { setEditing(t); setFormOpen(true); }}
                             className="rounded-lg p-1.5 text-faint transition hover:bg-surface-2 hover:text-foreground"
                             aria-label={`Editar ${t.description}`}
@@ -307,6 +332,15 @@ export function TransactionsPage() {
                       {t.type === "income" ? "+" : "-"}{brl(t.amount)}
                     </div>
                     <div className="flex justify-end gap-2">
+                      <button
+                        onClick={() => categorizeWithAi(t.id)}
+                        disabled={categorizingId === t.id}
+                        className="text-faint disabled:opacity-50"
+                        aria-label={`Categorizar ${t.description} com IA`}
+                        title="Categorizar com IA"
+                      >
+                        <Sparkles className={cn("h-3.5 w-3.5", categorizingId === t.id && "animate-pulse")} />
+                      </button>
                       <button onClick={() => { setEditing(t); setFormOpen(true); }} className="text-faint" aria-label={`Editar ${t.description}`}>
                         <Pencil className="h-3.5 w-3.5" />
                       </button>
