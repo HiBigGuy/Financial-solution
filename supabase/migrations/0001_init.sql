@@ -122,12 +122,20 @@ alter table public.investments     enable row level security;
 alter table public.goals           enable row level security;
 
 -- Policies: CRUD total para o próprio usuário (single-user, RLS é redundante mas garante segurança)
+-- Idempotente: drop policy antes de recriar para permitir re-execução com segurança
+drop policy if exists "profiles_own" on public.profiles;
 create policy "profiles_own"    on public.profiles        for all using (auth.uid() = id) with check (auth.uid() = id);
+drop policy if exists "categories_own" on public.categories;
 create policy "categories_own"  on public.categories      for all using (auth.uid() = user_id) with check (auth.uid() = user_id);
+drop policy if exists "sources_own" on public.income_sources;
 create policy "sources_own"     on public.income_sources  for all using (auth.uid() = user_id) with check (auth.uid() = user_id);
+drop policy if exists "cards_own" on public.cards;
 create policy "cards_own"       on public.cards           for all using (auth.uid() = user_id) with check (auth.uid() = user_id);
+drop policy if exists "tx_own" on public.transactions;
 create policy "tx_own"          on public.transactions    for all using (auth.uid() = user_id) with check (auth.uid() = user_id);
+drop policy if exists "inv_own" on public.investments;
 create policy "inv_own"         on public.investments     for all using (auth.uid() = user_id) with check (auth.uid() = user_id);
+drop policy if exists "goals_own" on public.goals;
 create policy "goals_own"       on public.goals           for all using (auth.uid() = user_id) with check (auth.uid() = user_id);
 
 -- ============================================================
