@@ -1,112 +1,103 @@
 # FinanceX — Gestão Financeira Pessoal
 
-Sistema **single-user** de gestão financeira pessoal com tema escuro, painel
-visual (dashboard), fluxo completo de lançamentos e módulos de salário, cartões,
-investimentos, metas e relatórios.
+Sistema **web** de gestão financeira pessoal com tema escuro, painel visual e
+módulos de salário, cartões, investimentos, metas, transações e relatórios.
 
-> Projeto pessoal open source (MIT). Dados protegidos por autenticação do
-> Supabase + políticas RLS — só você acessa o que é seu.
+> 🖥️ **Acesse em:** https://hibigguy.github.io/Financial-solution/
 
-## ✨ Funcionalidades
+## Como funciona
 
-| Módulo | O que faz |
+FinanceX é um **sistema único e centralizado hospedado na web** — não é um app
+que roda "na sua máquina". Você só precisa de um navegador:
+
+1. Acesse o site e **crie sua conta** (e-mail e senha, ou login por *magic link*
+   enviado ao e-mail).
+2. Faça login e comece a **lançar suas transações** e **preencher os módulos**.
+3. Todos os dados ficam salvos **na nuvem (Supabase)**, sincronizados em qualquer
+   dispositivo, acessíveis a qualquer hora.
+
+A conta de cada pessoa é **isolada**: ninguém enxerga os dados do outro — seu
+dinheiro fica só com você, protegido por autenticação e políticas de segurança
+(RLS) no banco de dados.
+
+> O app já nasce **vazio**. Para montar sua organização rapidamente, abra
+> **Transações → Categorias → "Carregar padrão"** e as categorias mais comuns
+> (moradia, alimentação, transporte, lazer…) são criadas para você.
+
+## Funcionalidades
+
+### Dashboard
+O centro de controle da sua vida financeira:
+- **4 cards de resumo**: saldo em conta, receitas do mês, despesas do mês e
+  patrimônio (investimentos + saldo), cada um com variação sobre o período
+  anterior.
+- **Evolução patrimonial** dos últimos 12 meses num gráfico de área, com
+  indicador de crescimento no ano.
+- **Distribuição de investimentos** por tipo (ações, FIIs, Tesouro…) num donut.
+- **Receitas vs. despesas** dos últimos 6 meses em barras comparativas.
+
+### Transações
+Registro completo de receitas e despesas:
+- Descrição, valor, data, **categoria**, **cartão** (opcional) e **tags**.
+- **Recorrência**: lançamentos fixos mensais ou **parcelados** (ex.: compra em
+  12x), que você gerencia ao abrir o lançamento.
+- **Busca** por texto e **filtros** por tipo, categoria, cartão, período e tag.
+- **Gestão de categorias**: crie as suas ou carregue as padrão, cada uma com cor.
+
+### Salário
+- Cadastre suas **fontes de renda**: salário fixo, freelas, renda extra — cada
+  uma com valor, frequência (mensal, quinzenal, semanal, pontual) e status
+  ativo/inativo.
+- Veja a **estimativa mensal** de renda e o **histórico de evolução** da sua
+  renda ao longo dos meses.
+
+### Cartões
+- Cadastre cartões de **crédito e débito**, com bandeira, final, **limite** e
+  **dia de fechamento e vencimento**.
+- Acompanhe a **fatura atual** calculada automaticamente, o **limite disponível**
+  e a categorização dos gastos do cartão.
+
+### Investimentos
+- Controle ativos de **ações, FIIs, Tesouro, renda fixa e cripto** com
+  quantidade, preço médio e preço atual.
+- Acompanhe a **posição atual** (`quantidade × preço`), o **investido** e a
+  **rentabilidade** de cada ativo e do total.
+- Visualize a **distribuição** do patrimônio investido por classe.
+
+### Metas
+- Defina **objetivos**: valor alvo, valor já aportado e prazo.
+- Acompanhe a **barra de progresso** e faça **aportes rápidos** direto na lista.
+
+### Relatórios
+- Analise **mês a mês** e **ano a ano** (comparativo com períodos anteriores).
+- **Filtre** por período e categoria, e resuma receitas, despesas, saldo e
+  patrimônio.
+- **Exporte os resultados**: planilha **CSV** (compatível com Excel/Sheets, com
+  BOM) ou **PDF** (impressão otimizada para papel).
+
+### Perfil e backup
+- Edite seu nome de exibição.
+- **Exporte todos os seus dados em JSON** de um clique (sidebar → ícone de
+  download), guardando uma cópia de segurança.
+
+## Tecnologias
+
+| Camada | Tecnologia |
 |---|---|
-| **Dashboard** | Cards de resumo (saldo, receitas, despesas, patrimônio), evolução patrimonial de 12 meses, distribuição por categoria de investimento, receitas vs despesas (6 meses) |
-| **Transações** | CRUD completo de receitas/despesas: categoria, cartão, tags, recorrência fixa/parcelada, busca e filtros |
-| **Salário** | Fontes de renda (fixo, freela, extra), estimativa mensal, histórico e evolução da renda |
-| **Cartões** | Crédito/débito, fatura atual (cálculo por dia de fechamento), limite disponível, categorização de gastos |
-| **Investimentos** | Ações, FIIs, Tesouro, renda fixa e cripto — com rentabilidade e donut de distribuição |
-| **Metas** | Valor alvo, aportes, prazo e barra de progresso |
-| **Relatórios** | Filtros por período/categoria, comparativos mês a mês e ano a ano, exportação **CSV** e **PDF** |
-| **Perfil/backup** | Edição de nome, exportação completa dos dados em JSON |
+| Frontend | React 18 + TypeScript + Vite |
+| Estilo | TailwindCSS v4 + shadcn/ui (Radix) |
+| Gráficos | Recharts |
+| Roteamento | React Router v7 |
+| Backend/banco | Supabase (Postgres + Auth + RLS) |
+| Deploy | GitHub Actions + GitHub Pages |
 
-## 🧰 Stack
+Detalhes técnicos e decisões de arquitetura: [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md).
+Schema e políticas de segurança do banco: [`supabase/migrations/0001_init.sql`](supabase/migrations/0001_init.sql).
 
-- **React 18 + TypeScript + Vite**
-- **TailwindCSS v4** + componentes padrão **shadcn/ui** (Radix primitives)
-- **Recharts** (área, donut, barras)
-- **React Router v7**
-- **Supabase** (Postgres + Auth + RLS)
-- **GitHub Actions + GitHub Pages** (deploy)
+## Deploy
 
-Decisões técnicas detalhadas em [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md)
-e o schema SQL em [`supabase/migrations/0001_init.sql`](supabase/migrations/0001_init.sql).
-
-## 🚀 Como rodar localmente
-
-### 1. Pré-requisitos
-
-- Node.js 20+
-- Uma conta no [Supabase](https://supabase.com) (grátis)
-
-### 2. Criar o projeto Supabase
-
-1. No Supabase, crie um projeto novo.
-2. Abra **SQL Editor** e execute todo o conteúdo de
-   [`supabase/migrations/0001_init.sql`](supabase/migrations/0001_init.sql).
-   Ele cria tabelas, índices e as políticas RLS.
-3. Em **Authentication → Providers**, mantenha **Email** habilitado.
-   - Recomendado: desative a *confirmação de email* em
-     **Authentication → Settings** para login imediato no primeiro acesso.
-4. Em **Project Settings → API**, copie a **Project URL** e a **anon public key**.
-
-### 3. Configurar o app
-
-```bash
-cp .env.example .env
-```
-
-Preencha:
-
-```bash
-VITE_SUPABASE_URL=https://SEU-PROJETO.supabase.co
-VITE_SUPABASE_ANON_KEY=sua-chave-anonima-aqui
-VITE_BASE=/            # "/" em dev; "/Financial-solution/" para GH Pages
-```
-
-### 4. Rodar
-
-```bash
-npm install
-npm run dev        # http://localhost:5173
-```
-
-Abra no navegador, crie sua conta (ou use o link mágico) e comece a lançar
-transações. O app começa **vazio** — use Transações → "Categorias" →
-"Carregar padrão" para criar categorias rapidamente.
-
-## ☁️ Deploy no GitHub (GitHub Pages)
-
-O workflow `.github/workflows/deploy.yml` já:
-- roda `lint` + `typecheck` + `build` a cada push na `main`;
-- publica o `dist/` no GitHub Pages.
-
-### Configurar uma vez
-
-1. Habilite o GitHub Pages **Settings → Pages → Source → GitHub Actions**.
-2. (Opcional) Ajuste o `VITE_BASE` no workflow para o nome do seu repositório,
-   e a URL duplicada em `public/sitemap.xml` / `public/robots.txt` / `index.html`.
-3. Push para `main`. O site ficará em `https://SEU-USUARIO.github.io/SEU-REPO/`.
-
-> **Nota sobre o `.env`:** as variáveis são usadas no momento do build. Como o
-> workflow não recebe `VITE_SUPABASE_URL`/`ANON_KEY`, o frontend compila com as
-> chaves ausentes e exibe a tela de "Supabase não configurado". Para injetar as
-> chaves no build, adicione secrets no repositório
-> (**Settings → Secrets → Actions**) e passe as variáveis no job `build`.
-
-## 🛠 Scripts
-
-| Comando | Descrição |
-|---|---|
-| `npm run dev` | servidor de desenvolvimento |
-| `npm run build` | typecheck + build de produção |
-| `npm run lint` | ESLint |
-| `npm run typecheck` | checagem de tipos |
-| `npm run preview` | serve o build gerado |
-
-## 🖥️ Screenshots
-
-*Adicione prints do dashboard, salário e relatórios aqui após o primeiro deploy.*
+Qualquer push na branch `main` dispara o workflow `.github/workflows/deploy.yml`,
+que roda lint, typecheck e build e publica automaticamente no GitHub Pages.
 
 ## 📄 Licença
 
