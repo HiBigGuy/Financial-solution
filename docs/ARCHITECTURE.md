@@ -100,7 +100,7 @@ de IA Gemini), `categorize` (Gemini) e `insights`.
 
 Secrets (configurar em **Supabase → Project Settings → Edge Functions → Secrets**;
 **nunca** no frontend): `PLUGGY_CLIENT_ID`, `PLUGGY_CLIENT_SECRET`,
-`GEMINI_API_KEY`, `GEMINI_MODEL` (opcional), `SUPABASE_URL`, `SUPABASE_ANON_KEY`,
+`GEMINI_API_KEY`, `GEMINI_MODEL` (opcional; padrão `gemini-2.0-flash-lite`), `SUPABASE_URL`, `SUPABASE_ANON_KEY`,
 `SUPABASE_SERVICE_ROLE_KEY` e `CRON_SECRET`.
 
 O deploy pode ser feito com a CLI do Supabase, uma função por vez:
@@ -117,6 +117,12 @@ supabase functions deploy insights
 Depois do deploy, o frontend deve chamar as funções usando o cliente Supabase
 autenticado. A chave `SUPABASE_SERVICE_ROLE_KEY` nunca deve ser exposta ao
 navegador.
+
+Quando uma transação importada não tem categoria, o sistema tenta primeiro o
+Gemini. Se a API falhar, atingir a cota ou não retornar uma categoria válida,
+entra o fallback local por regras e palavras-chave (por exemplo, Uber/99,
+iFood e farmácia), sem custo adicional. As regras escolhem entre as categorias
+já cadastradas pelo usuário.
 
 O agendamento da sincronização (a cada 6h) usa `pg_cron` + `pg_net` — há um
 template comentado no fim da migration `0002`; basta preencher o `PROJECT_REF` e

@@ -11,7 +11,7 @@ interface GeminiResponse {
 }
 
 async function generateContent(system: string, prompt: string): Promise<string> {
-  const model = Deno.env.get("GEMINI_MODEL") ?? "gemini-2.0-flash";
+  const model = Deno.env.get("GEMINI_MODEL") ?? "gemini-2.0-flash-lite";
   const apiKey = encodeURIComponent(requireEnv("GEMINI_API_KEY"));
   const res = await fetch(
     `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`,

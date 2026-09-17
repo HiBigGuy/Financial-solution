@@ -1,6 +1,7 @@
 import { errorResponse, json, preflight } from "../_shared/cors.ts";
 import { getUser, userClient } from "../_shared/supabase.ts";
 import { classifyTransaction } from "../_shared/gemini.ts";
+import { fallbackCategory } from "../_shared/fallback.ts";
 import { categorizeUncategorized } from "../_shared/sync.ts";
 
 // Categoriza por IA.
@@ -38,12 +39,20 @@ Deno.serve(async (req) => {
 
       if (!options.length) return json({ error: "Nenhuma categoria cadastrada" }, 400);
 
-      const { categoryId, confidence } = await classifyTransaction({
-        description: tx.description as string,
-        amount: Number(tx.amount),
-        kind,
-        categories: options,
-      });
+      let suggestion;
+      try {
+        suggestion = await classifyTransaction({
+          description: tx.description as string,
+          amount: Number(tx.amount),
+          kind,
+          categories: options,
+        });
+      } catch {
+        suggestion = fallbackCategory({ description: tx.description as string, kind, categories: options });
+      }
+      const { categoryId, confidence } = suggestion.categoryId
+        ? suggestion
+        : fallbackCategory({ description: tx.description as string, kind, categories: options });
 
       if (!categoryId) return json({ transactionId: tx.id, categoryId: null, confidence });
 

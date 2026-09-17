@@ -1,6 +1,6 @@
 -- Vault — Camada bancária (Open Finance) + IA
 -- Fase 1: schema, RLS e preparação do agendamento (pg_cron/pg_net).
--- As Edge Functions (Pluggy + Anthropic) são a Fase 2.
+-- As Edge Functions (Pluggy + Gemini) são a Fase 2.
 --
 -- Idempotente: pode ser re-executada com segurança.
 

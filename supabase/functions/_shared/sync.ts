@@ -6,6 +6,7 @@ import {
   toTransactionRow,
 } from "./pluggy.ts";
 import { classifyTransaction, type CategoryExample } from "./gemini.ts";
+import { fallbackCategory } from "./fallback.ts";
 
 export interface BankConnection {
   id: string;
@@ -130,13 +131,21 @@ export async function categorizeUncategorized(
     if (!options.length) continue;
 
     try {
-      const { categoryId, confidence } = await classifyTransaction({
-        description: tx.description as string,
-        amount: Number(tx.amount),
-        kind,
-        categories: options,
-        examples,
-      });
+      let suggestion;
+      try {
+        suggestion = await classifyTransaction({
+          description: tx.description as string,
+          amount: Number(tx.amount),
+          kind,
+          categories: options,
+          examples,
+        });
+      } catch {
+        suggestion = fallbackCategory({ description: tx.description as string, kind, categories: options });
+      }
+      const { categoryId, confidence } = suggestion.categoryId
+        ? suggestion
+        : fallbackCategory({ description: tx.description as string, kind, categories: options });
       if (!categoryId) continue;
       await supabase
         .from("transactions")
