@@ -121,7 +121,7 @@ alter table public.transactions    enable row level security;
 alter table public.investments     enable row level security;
 alter table public.goals           enable row level security;
 
--- Policies: CRUD total para o próprio usuário (single-user, RLS é redundante mas garante segurança)
+-- Policies: CRUD somente para o próprio usuário (multi-tenant com isolamento via RLS)
 -- Idempotente: drop policy antes de recriar para permitir re-execução com segurança
 drop policy if exists "profiles_own" on public.profiles;
 create policy "profiles_own"    on public.profiles        for all using (auth.uid() = id) with check (auth.uid() = id);
